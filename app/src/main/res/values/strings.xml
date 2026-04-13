@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NotifListener</string>
+    <string name="app_description">Monitor notifikasi pembayaran dari DANA, BCA, BRI dan kirim ke webhook server</string>
+
+    <!-- Status -->
+    <string name="status_active">Listener Aktif - Mendengarkan notifikasi</string>
+    <string name="status_inactive">Listener Tidak Aktif</string>
+    <string name="status_no_permission">Izin Notifikasi Belum Diberikan</string>
+
+    <!-- Buttons -->
+    <string name="btn_enable">Aktifkan</string>
+    <string name="btn_disable">Nonaktifkan</string>
+    <string name="btn_save">Simpan Konfigurasi</string>
+    <string name="btn_test_webhook">Test Webhook</string>
+    <string name="btn_clear">Hapus Log</string>
+    <string name="btn_disable_battery_opt">Nonaktifkan Optimasi Baterai</string>
+
+    <!-- Sections -->
+    <string name="section_webhook">Konfigurasi Webhook</string>
+    <string name="section_monitor">Pengaturan Monitor</string>
+    <string name="section_log">Log Transaksi</string>
+
+    <!-- Hints -->
+    <string name="hint_webhook_url">Webhook URL (https://example.com/webhook)</string>
+    <string name="hint_api_key">API Key (opsional)</string>
+
+    <!-- Switches -->
+    <string name="switch_only_incoming">Hanya Dana Masuk (Incoming)</string>
+    <string name="label_providers">Provider yang dimonitor:</string>
+
+    <!-- Empty States -->
+    <string name="empty_log">Belum ada transaksi terdeteksi.\nPastikan Notification Access sudah diaktifkan.</string>
+
+    <!-- Battery Warning -->
+    <string name="battery_warning_title">Optimasi Baterai</string>
+    <string name="battery_warning_desc">Untuk memastikan service berjalan terus di background, nonaktifkan optimasi baterai untuk aplikasi ini.</string>
+
+    <!-- Messages -->
+    <string name="msg_webhook_saved">Konfigurasi webhook tersimpan</string>
+    <string name="msg_webhook_url_empty">URL webhook tidak boleh kosong</string>
+    <string name="msg_webhook_url_invalid">URL webhook tidak valid</string>
+    <string name="msg_test_sending">Mengirim test webhook...</string>
+    <string name="msg_test_success">Test webhook berhasil! (HTTP %d)</string>
+    <string name="msg_test_failed">Test webhook gagal: %s</string>
+    <string name="msg_log_cleared">Log transaksi dihapus</string>
+    <string name="msg_permission_required">Izin Notification Access diperlukan untuk menjalankan aplikasi ini</string>
+
+    <!-- Dialog -->
+    <string name="dialog_clear_title">Hapus Semua Log?</string>
+    <string name="dialog_clear_message">Semua log transaksi akan dihapus. Tindakan ini tidak bisa dibatalkan.</string>
+    <string name="dialog_yes">Ya, Hapus</string>
+    <string name="dialog_no">Batal</string>
+</resources>

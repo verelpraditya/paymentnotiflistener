@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<notification-listener-filter xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Filter will be applied programmatically -->
+</notification-listener-filter>

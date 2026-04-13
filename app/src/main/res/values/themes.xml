@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.NotifListener" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#1976D2</item>
+        <item name="colorPrimaryContainer">#BBDEFB</item>
+        <item name="colorOnPrimaryContainer">#003258</item>
+        <item name="colorSecondary">#4CAF50</item>
+        <item name="colorSecondaryContainer">#C8E6C9</item>
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+    </style>
+</resources>

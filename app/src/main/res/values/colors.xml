@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_launcher_background">#1976D2</color>
+    <color name="status_sent">#4CAF50</color>
+    <color name="status_failed">#F44336</color>
+    <color name="status_pending">#FF9800</color>
+    <color name="type_incoming">#4CAF50</color>
+    <color name="type_outgoing">#F44336</color>
+
+    <!-- Badge colors per provider -->
+    <color name="badge_dana">#1389E5</color>
+    <color name="badge_bca">#003399</color>
+    <color name="badge_bri">#004B93</color>
+    <color name="badge_bni">#E65100</color>
+    <color name="badge_mandiri">#003B7A</color>
+    <color name="badge_default">#757575</color>
+</resources>

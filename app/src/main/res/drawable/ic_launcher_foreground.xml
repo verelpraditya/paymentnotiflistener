@@ -1,0 +1,19 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Background circle -->
+    <path
+        android:fillColor="#1976D2"
+        android:pathData="M54,54m-40,0a40,40 0,1 1,80 0a40,40 0,1 1,-80 0"/>
+
+    <!-- Dollar/payment icon simplified -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,30 L54,34 M54,74 L54,78 M42,44 C42,39.58 46.03,36 51,36 L57,36 C61.97,36 66,39.58 66,44 C66,48.42 61.97,52 57,52 L51,52 C46.03,52 42,55.58 42,60 C42,64.42 46.03,68 51,68 L57,68 C61.97,68 66,64.42 66,60"
+        android:strokeWidth="4"
+        android:strokeColor="#FFFFFF"
+        android:fillColor="#00000000"/>
+</vector>
