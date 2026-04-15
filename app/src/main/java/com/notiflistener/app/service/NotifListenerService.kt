@@ -61,8 +61,23 @@ class NotifListenerService : NotificationListenerService() {
         prefManager = PreferenceManager(this)
         database = AppDatabase.getInstance(this)
         webhookSender = WebhookSender()
+        prefManager.isListenerConnected = false
 
         startForegroundService()
+    }
+
+    override fun onListenerConnected() {
+        super.onListenerConnected()
+        prefManager.isListenerConnected = true
+        Log.i(TAG, "Notification listener connected")
+        startForegroundService()
+    }
+
+    override fun onListenerDisconnected() {
+        super.onListenerDisconnected()
+        prefManager.isListenerConnected = false
+        Log.w(TAG, "Notification listener disconnected, requesting rebind")
+        ListenerRecovery.requestRebindIfAllowed(applicationContext, "listener disconnected")
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -71,9 +86,17 @@ class NotifListenerService : NotificationListenerService() {
 
     override fun onDestroy() {
         Log.d(TAG, "Service destroyed")
+        prefManager.isListenerConnected = false
         serviceScope.cancel()
         webhookSender.shutdown()
         super.onDestroy()
+    }
+
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+        prefManager.isListenerConnected = false
+        Log.w(TAG, "App task removed from recents, requesting listener rebind")
+        ListenerRecovery.requestRebindIfAllowed(applicationContext, "task removed")
     }
 
     /**
@@ -105,6 +128,8 @@ class NotifListenerService : NotificationListenerService() {
             ?: ""
 
         if (title.isBlank() && text.isBlank()) return
+
+        prefManager.isListenerConnected = true
 
         Log.d(TAG, "Notification from $packageName - Title: $title - Text: $text")
 

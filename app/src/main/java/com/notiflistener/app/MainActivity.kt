@@ -23,6 +23,7 @@ import com.notiflistener.app.data.TransactionLog
 import com.notiflistener.app.databinding.ActivityMainBinding
 import com.notiflistener.app.model.PaymentNotification
 import com.notiflistener.app.model.TransactionType
+import com.notiflistener.app.service.ListenerRecovery
 import com.notiflistener.app.service.NotifListenerService
 import com.notiflistener.app.service.WebhookRetryWorker
 import com.notiflistener.app.util.PreferenceManager
@@ -74,6 +75,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        if (isNotificationListenerEnabled()) {
+            ListenerRecovery.requestRebindIfAllowed(this, "activity resume health check")
+        }
         updateServiceStatus()
         updateBatteryOptimizationWarning()
 
@@ -172,14 +176,18 @@ class MainActivity : AppCompatActivity() {
     private fun updateServiceStatus() {
         val isEnabled = isNotificationListenerEnabled()
 
-        if (isEnabled) {
+        if (!isEnabled) {
+            binding.tvServiceStatus.text = getString(R.string.status_no_permission)
+            binding.viewStatusIndicator.setBackgroundResource(R.drawable.circle_red)
+            binding.btnTogglePermission.text = getString(R.string.btn_enable)
+        } else if (prefManager.isListenerConnected) {
             binding.tvServiceStatus.text = getString(R.string.status_active)
             binding.viewStatusIndicator.setBackgroundResource(R.drawable.circle_green)
             binding.btnTogglePermission.text = getString(R.string.btn_disable)
         } else {
-            binding.tvServiceStatus.text = getString(R.string.status_no_permission)
+            binding.tvServiceStatus.text = getString(R.string.status_reconnecting)
             binding.viewStatusIndicator.setBackgroundResource(R.drawable.circle_red)
-            binding.btnTogglePermission.text = getString(R.string.btn_enable)
+            binding.btnTogglePermission.text = getString(R.string.btn_disable)
         }
     }
 
@@ -255,43 +263,59 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             val sender = WebhookSender()
-            val testNotification = PaymentNotification(
-                source = "TEST",
-                packageName = "com.notiflistener.app.test",
-                amount = 1000,
-                rawTitle = "Test Notification",
-                rawText = "Ini adalah test webhook dari NotifListener",
-                senderName = "TEST_USER",
-                timestamp = System.currentTimeMillis(),
-                type = TransactionType.INCOMING
-            )
 
-            val response = sender.send(
-                webhookUrl = url,
-                notification = testNotification,
-                apiKey = apiKey.ifBlank { null },
-                deviceId = prefManager.deviceId,
-                appVersion = getAppVersion()
-            )
+            try {
+                val testNotification = PaymentNotification(
+                    source = "TEST",
+                    packageName = "com.notiflistener.app.test",
+                    amount = 1000,
+                    rawTitle = "Test Notification",
+                    rawText = "Ini adalah test webhook dari NotifListener",
+                    senderName = "TEST_USER",
+                    timestamp = System.currentTimeMillis(),
+                    type = TransactionType.INCOMING
+                )
 
-            withContext(Dispatchers.Main) {
-                binding.btnTestWebhook.isEnabled = true
+                val response = sender.send(
+                    webhookUrl = url,
+                    notification = testNotification,
+                    apiKey = apiKey.ifBlank { null },
+                    deviceId = prefManager.deviceId,
+                    appVersion = getAppVersion()
+                )
 
-                if (response.success) {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.msg_test_success, response.httpCode),
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                } else {
-                    val msg = "HTTP ${response.httpCode}: ${response.message?.take(100)}"
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.msg_test_failed, msg),
-                        Snackbar.LENGTH_LONG
-                    ).show()
+                withContext(Dispatchers.Main) {
+                    if (!isDestroyed) {
+                        binding.btnTestWebhook.isEnabled = true
+
+                        if (response.success) {
+                            Snackbar.make(
+                                binding.root,
+                                getString(R.string.msg_test_success, response.httpCode),
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        } else {
+                            val msg = "HTTP ${response.httpCode}: ${response.message?.take(100)}"
+                            Snackbar.make(
+                                binding.root,
+                                getString(R.string.msg_test_failed, msg),
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        }
+                    }
                 }
-
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    if (!isDestroyed) {
+                        binding.btnTestWebhook.isEnabled = true
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.msg_test_exception, e.message ?: "unknown"),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            } finally {
                 sender.shutdown()
             }
         }

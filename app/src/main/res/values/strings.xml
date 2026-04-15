@@ -7,6 +7,7 @@
     <string name="status_active">Listener Aktif - Mendengarkan notifikasi</string>
     <string name="status_inactive">Listener Tidak Aktif</string>
     <string name="status_no_permission">Izin Notifikasi Belum Diberikan</string>
+    <string name="status_reconnecting">Izin aktif, listener sedang dipulihkan</string>
 
     <!-- Buttons -->
     <string name="btn_enable">Aktifkan</string>
@@ -43,6 +44,7 @@
     <string name="msg_test_sending">Mengirim test webhook...</string>
     <string name="msg_test_success">Test webhook berhasil! (HTTP %d)</string>
     <string name="msg_test_failed">Test webhook gagal: %s</string>
+    <string name="msg_test_exception">Terjadi error saat test webhook: %s</string>
     <string name="msg_log_cleared">Log transaksi dihapus</string>
     <string name="msg_permission_required">Izin Notification Access diperlukan untuk menjalankan aplikasi ini</string>
 

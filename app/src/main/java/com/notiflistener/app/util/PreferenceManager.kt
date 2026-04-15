@@ -31,6 +31,11 @@ class PreferenceManager(context: Context) {
         get() = prefs.getBoolean(KEY_LISTENER_ENABLED, true)
         set(value) = prefs.edit().putBoolean(KEY_LISTENER_ENABLED, value).apply()
 
+    /** Status koneksi NotificationListenerService terakhir yang diketahui. */
+    var isListenerConnected: Boolean
+        get() = prefs.getBoolean(KEY_LISTENER_CONNECTED, false)
+        set(value) = prefs.edit().putBoolean(KEY_LISTENER_CONNECTED, value).apply()
+
     /** Apakah hanya mengirim notifikasi INCOMING (dana masuk) saja */
     var onlyIncoming: Boolean
         get() = prefs.getBoolean(KEY_ONLY_INCOMING, true)
@@ -110,6 +115,7 @@ class PreferenceManager(context: Context) {
         private const val KEY_WEBHOOK_URL = "webhook_url"
         private const val KEY_API_KEY = "api_key"
         private const val KEY_LISTENER_ENABLED = "listener_enabled"
+        private const val KEY_LISTENER_CONNECTED = "listener_connected"
         private const val KEY_ONLY_INCOMING = "only_incoming"
         private const val KEY_AUTO_RETRY = "auto_retry"
         private const val KEY_MAX_RETRY = "max_retry"

@@ -19,12 +19,11 @@ class BootReceiver : BroadcastReceiver() {
         if (context == null || intent == null) return
 
         if (intent.action == Intent.ACTION_BOOT_COMPLETED ||
-            intent.action == "android.intent.action.QUICKBOOT_POWERON"
+            intent.action == "android.intent.action.QUICKBOOT_POWERON" ||
+            intent.action == Intent.ACTION_MY_PACKAGE_REPLACED
         ) {
-            Log.d(TAG, "Device booted, NotificationListenerService will auto-restart by system")
-            // NotificationListenerService akan di-restart otomatis oleh sistem
-            // karena sudah memiliki permission BIND_NOTIFICATION_LISTENER_SERVICE.
-            // Kita tidak perlu start manual.
+            Log.d(TAG, "System event received (${intent.action}), requesting listener rebind")
+            ListenerRecovery.requestRebindIfAllowed(context.applicationContext, intent.action ?: "system event")
         }
     }
 }
